@@ -1,0 +1,61 @@
+let playerChoices = document.querySelectorAll(".choice-card");
+let computerDisplay = document.querySelector(".computer-choice-display");
+let resetButton = document.querySelector(".reset-button");
+
+let winCounter = document.getElementById("winScore");
+let loseCounter = document.getElementById("loseScore");
+let drawCounter = document.getElementById("drawScore");
+
+let gameOptions = ["rock", "paper", "scissor"];
+let win = 0, lose = 0, draw = 0;
+
+playerChoices.forEach(choice => {
+  choice.addEventListener("click", () => {
+    let playerChoiceId = choice.id.replace("Option", "");
+    let computerChoice = gameOptions[Math.floor(Math.random() * 3)];
+
+    // Remove old computer choice if any
+    computerDisplay.innerHTML = "";
+
+    let computerChoiceElement = document.createElement("div");
+    computerChoiceElement.classList.add("computer-choice-card");
+    let choiceImage = document.createElement("img");
+    choiceImage.src = `Images/${computerChoice}.png`;
+    
+
+    computerChoiceElement.appendChild(choiceImage);
+    
+    computerDisplay.style.display = "flex";
+    computerDisplay.appendChild(computerChoiceElement);
+    resetButton.style.display = "flex";
+    console.log( playerChoiceId, computerChoice)
+    // Game logic
+    if (playerChoiceId === computerChoice) {
+      draw++;
+      drawCounter.innerText = draw;
+    } else if (
+      (playerChoiceId === "rock" && computerChoice === "scissor") ||
+      (playerChoiceId === "paper" && computerChoice === "rock") ||
+      (playerChoiceId === "scissor" && computerChoice === "paper")
+    ) {
+      win++;
+      winCounter.innerText = win;
+      
+   
+    } else {
+      lose++;
+      loseCounter.innerText = lose;
+    }
+  });
+});
+
+resetButton.addEventListener("click", () => {
+  win = lose = draw = 0;
+  winCounter.innerText = 0;
+  loseCounter.innerText = 0;
+  drawCounter.innerText = 0;
+
+  
+  resetButton.style.display = "none";
+  computerDisplay.style.display = "none";
+});
